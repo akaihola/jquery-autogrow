@@ -1,33 +1,24 @@
 /* 
- *  Auto Expanding Text Area (1.1)
- *  by Chrys Bader (www.chrysbader.com)
- *  chrysb@gmail.com
+ * Auto Expanding Text Area (1.02)
+ * by Chrys Bader (www.chrysbader.com)
+ * chrysb@gmail.com
  *
- *  Special thanks to:
- *  Jake Chapa - jake@hybridstudio.com
- *  John Resig - jeresig@gmail.com
+ * Special thanks to:
+ * Jake Chapa - jake@hybridstudio.com
+ * John Resig - jeresig@gmail.com
  *
- *  Copyright (c) 2008 Chrys Bader (www.chrysbader.com)
- *	
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (c) 2008 Chrys Bader (www.chrysbader.com)
+ * Dual licensed under the MIT (MIT-LICENSE.txt)
+ * and GPL (GPL-LICENSE.txt) licenses. 
  *
  *
- *  NOTE: This script requires jQuery to work.  Download jQuery at www.jquery.com
+ * NOTE: This script requires jQuery to work.  Download jQuery at www.jquery.com
  *
  */
  
 (function($) {
+		  
+	var self = null;
  
 	$.fn.autogrow = function(o)
 	{	
@@ -72,14 +63,14 @@
 			
 			self = this;
 			
-			this.textarea.css({overflow: 'hidden'});
+			this.textarea.css({overflow: 'hidden', display: 'block'});
 			this.textarea.bind('focus', function() { self.startExpand() } ).bind('blur', function() { self.stopExpand });	
 		},
 						 
 		startExpand: function() {
 			
 	
-			this.interval = window.setInterval(function() {self.checkExpand()}, 150);
+			this.interval = window.setInterval(function() {self.checkExpand()}, 500);
 		},
 		
 		stopExpand: function() {
