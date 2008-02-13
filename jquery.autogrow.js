@@ -16,14 +16,14 @@
  *
  */
  
-(function($) {
+(function(jQuery) {
 		  
 	var self = null;
  
-	$.fn.autogrow = function(o)
+	jQuery.fn.autogrow = function(o)
 	{	
 		return this.each(function() {
-			new $.autogrow(this, o);
+			new jQuery.autogrow(this, o);
 		});
 	};
 	
@@ -32,45 +32,45 @@
      * The autogrow object.
      *
      * @constructor
-     * @name $.autogrow
+     * @name jQuery.autogrow
      * @param Object e The textarea to create the autogrow for.
      * @param Hash o A set of key/value pairs to set as configuration properties.
      * @cat Plugins/autogrow
      */
 	
-	$.autogrow = function (e, o)
+	jQuery.autogrow = function (e, o)
 	{
-		this.dummy			= null;
-		this.interval		= null;
-		this.line_height	= parseInt($(e).css('line-height'));
-		this.min_height		= parseInt($(e).css('min-height'));
-		this.options		= o;
-		this.textarea		= $(e);
+		this.dummy			  = null;
+		this.interval	 	  = null;
+		this.line_height	= 0, parseInt(jQuery(e).css('line-height'));
+		if(this.line_height == NaN)
+		  this.line_height = 0;
+		this.min_height		= parseInt(jQuery(e).css('min-height'));
+		this.options		  = o;
+		this.textarea		  = jQuery(e);
 		
 		// Only one textarea activated at a time, the one being used
 		this.init();
 	};
 	
-	$.autogrow.fn = $.autogrow.prototype = {
-        autogrow: '1.1'
-    };
+	jQuery.autogrow.fn = jQuery.autogrow.prototype = {
+    autogrow: '1.1'
+  };
 	
- 	$.autogrow.fn.extend = $.autogrow.extend = $.extend;
+ 	jQuery.autogrow.fn.extend = jQuery.autogrow.extend = jQuery.extend;
 	
-	$.autogrow.fn.extend({
+	jQuery.autogrow.fn.extend({
 						 
-		init: function() {
-			
-			self = this;
-			
+		init: function() {			
+			var self = this;			
 			this.textarea.css({overflow: 'hidden', display: 'block'});
-			this.textarea.bind('focus', function() { self.startExpand() } ).bind('blur', function() { self.stopExpand });	
+			this.textarea.bind('focus', function() { self.startExpand() } ).bind('blur', function() { self.stopExpand });
+			this.checkExpand();	
 		},
 						 
-		startExpand: function() {
-			
-	
-			this.interval = window.setInterval(function() {self.checkExpand()}, 500);
+		startExpand: function() {				
+		  var self = this;
+			this.interval = window.setInterval(function() {self.checkExpand()}, 400);
 		},
 		
 		stopExpand: function() {
@@ -81,18 +81,18 @@
 			
 			if (this.dummy == null)
 			{
-				this.dummy = $('<div></div>');
+				this.dummy = jQuery('<div></div>');
 				this.dummy.css({
-												'font-size': 	this.textarea.css('font-size'),
-												'font-family': 	this.textarea.css('font-family'),
-												'width': 		this.textarea.css('width'),
-												'padding': 		this.textarea.css('padding'),
-												'line-height':  this.textarea.css('line-height'),
-												'overflow-x':   'hidden',
-												'display':		'none',
-												'position':     'absolute',
-												'top':			0,
-												'left':			'-9999px'
+												'font-size'  : this.textarea.css('font-size'),
+												'font-family': this.textarea.css('font-family'),
+												'width'      : this.textarea.css('width'),
+												'padding'    : this.textarea.css('padding'),
+												'line-height': this.textarea.css('line-height'),
+												'overflow-x' : 'hidden',
+												'display'    : 'none',
+												'position'   : 'absolute',
+												'top'        : 0,
+												'left'       : '-9999px'
 												}).appendTo('body');
 			}
 			
