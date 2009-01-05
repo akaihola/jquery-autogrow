@@ -86,7 +86,7 @@
 				this.dummy.css({
 												'font-size'  : this.textarea.css('font-size'),
 												'font-family': this.textarea.css('font-family'),
-												'width'      : this.textarea.css('width'),
+												'width'      : this.textarea.width() + 'px',
 												'padding'    : this.textarea.css('padding'),
 												'line-height': this.line_height + 'px',
 												'overflow-x' : 'hidden',
