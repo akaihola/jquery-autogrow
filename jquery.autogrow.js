@@ -46,6 +46,7 @@
 		this.line_height	  	= this.options.lineHeight || parseInt(jQuery(e).css('line-height'), 10);
 		this.min_height		  	= this.options.minHeight || parseInt(jQuery(e).css('min-height'), 10);
 		this.max_height		  	= this.options.maxHeight || parseInt(jQuery(e).css('max-height'), 10);
+		this.extra_lines		= isNaN(this.options.extraLines) ? 1 : this.options.extraLines;
 		this.textarea		  	= jQuery(e);
 		
 		if(isNaN(this.line_height )) {
@@ -87,7 +88,7 @@
 				this.dummy.css({
 												'font-size'     : this.textarea.css('font-size'),
 												'font-family'   : this.textarea.css('font-family'),
-												'width'         : this.textarea.css('width'),
+												'width'         : this.textarea.width() - 2,
 												'padding-top'   : this.textarea.css('padding-top'),
 												'padding-bottom': this.textarea.css('padding-bottom'),
 												'padding-left'  : this.textarea.css('padding-left'),
@@ -117,8 +118,9 @@
 			if (this.dummy.html() != html ||  this.dummy.html().length === 0)
 			{
 				this.dummy.html(html);	
-				
-				if (this.max_height > 0 && (this.dummy.height() + this.line_height > this.max_height))
+
+				var target_height = Math.max(this.dummy.height() + this.extra_lines * this.line_height, this.line_height);
+				if (this.max_height > 0 && (target_height > this.max_height))
 				{
 					this.textarea.css('overflow-y', 'auto');
 					this.textarea.css('height', this.max_height);	//Added this line to enfore the max height if content length more than max height.
@@ -126,9 +128,9 @@
 				else
 				{
 					this.textarea.css('overflow-y', 'hidden');
-					if (this.textarea.height() < this.dummy.height() + this.line_height || (this.dummy.height() < this.textarea.height()))
-					{	
-						this.textarea.animate({height: (this.dummy.height() + this.line_height) + 'px'}, 100);	
+					if (this.textarea.height() < target_height || (this.dummy.height() < this.textarea.height()))
+					{
+						this.textarea.animate({height: target_height + 'px'}, 100);
 					}
 				}
 			}
