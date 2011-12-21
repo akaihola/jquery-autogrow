@@ -45,7 +45,8 @@
 		this.line_height	  	= this.options.lineHeight || parseInt(jQuery(e).css('line-height'));
 		this.min_height		  	= this.options.minHeight || parseInt(jQuery(e).css('min-height'));
 		this.max_height		  	= this.options.maxHeight || parseInt(jQuery(e).css('max-height'));;
-		this.expand_callback		= this.options.expandCallback;
+		this.expand_callback	= this.options.expandCallback;
+		this.resize_callback    = this.options.resizeCallback || function() {};
 		this.textarea		  	= jQuery(e);
 
 		if(this.line_height == NaN)
@@ -122,8 +123,10 @@
 				{
 					this.textarea.css('overflow-y', 'hidden');
 					if (this.textarea.height() < this.dummy.height() + this.line_height || (this.dummy.height() < this.textarea.height()))
-					{	
-						this.textarea.animate({height: (this.dummy.height() + this.line_height) + 'px'}, 100);	
+					{
+						var newHeight = (this.dummy.height() + this.line_height);
+						this.textarea.animate({height: newHeight + 'px'}, 100);
+						this.resize_callback(newHeight);
 					}
 				}
 			}
