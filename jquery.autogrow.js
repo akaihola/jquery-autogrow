@@ -48,6 +48,7 @@
 		this.expand_callback	  = this.options.expandCallback;
 		this.resize_callback      = this.options.resizeCallback || function() {};
 		this.textarea		  	  = jQuery(e);
+		this.even_numbered_height = this.options.evenNumberedHeight || false;
 
 		if(this.line_height == NaN)
 		  this.line_height = 0;
@@ -128,6 +129,10 @@
 						if (newHeight < this.min_height) 
 						{
 							newHeight = this.min_height;
+						}
+
+						if (this.even_numbered_height) {
+							newHeight += newHeight % 2;
 						}
 						this.textarea.animate({height: newHeight + 'px'}, 100);
 						this.resize_callback(newHeight);
