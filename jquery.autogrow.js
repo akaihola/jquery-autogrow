@@ -39,15 +39,15 @@
 
 	jQuery.autogrow = function (e, o)
 	{
-		this.options		  	= o || {};
-		this.dummy			  	= null;
-		this.interval	 	  	= null;
-		this.line_height	  	= this.options.lineHeight || parseInt(jQuery(e).css('line-height'));
-		this.min_height		  	= this.options.minHeight || parseInt(jQuery(e).css('min-height'));
-		this.max_height		  	= this.options.maxHeight || parseInt(jQuery(e).css('max-height'));;
-		this.expand_callback	= this.options.expandCallback;
-		this.resize_callback    = this.options.resizeCallback || function() {};
-		this.textarea		  	= jQuery(e);
+		this.options		  	  = o || {};
+		this.dummy			  	  = null;
+		this.interval	 	  	  = null;
+		this.line_height	  	  = this.options.lineHeight || parseInt(jQuery(e).css('line-height'));
+		this.min_height		  	  = parseInt(this.options.minHeight || jQuery(e).css('min-height'));
+		this.max_height		  	  = this.options.maxHeight || parseInt(jQuery(e).css('max-height'));;
+		this.expand_callback	  = this.options.expandCallback;
+		this.resize_callback      = this.options.resizeCallback || function() {};
+		this.textarea		  	  = jQuery(e);
 
 		if(this.line_height == NaN)
 		  this.line_height = 0;
@@ -125,6 +125,10 @@
 					if (this.textarea.height() < this.dummy.height() + this.line_height || (this.dummy.height() < this.textarea.height()))
 					{
 						var newHeight = (this.dummy.height() + this.line_height);
+						if (newHeight < this.min_height) 
+						{
+							newHeight = this.min_height;
+						}
 						this.textarea.animate({height: newHeight + 'px'}, 100);
 						this.resize_callback(newHeight);
 					}
