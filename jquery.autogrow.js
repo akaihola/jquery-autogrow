@@ -43,6 +43,12 @@
 		this.dummy                = null;
 		this.interval             = null;
 		this.line_height          = this.options.lineHeight || parseInt(jQuery(e).css('line-height'));
+
+		if (isNaN(this.line_height)) {
+			// "normal" could also be a property, which will fail later
+			throw "The line-height must be a number (either the option or the css property on the element)";
+		}
+
 		this.min_height           = parseInt(this.options.minHeight || jQuery(e).css('min-height'));
 		this.max_height           = this.options.maxHeight || parseInt(jQuery(e).css('max-height'));;
 		this.expand_callback      = this.options.expandCallback;
