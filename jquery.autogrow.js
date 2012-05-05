@@ -85,20 +85,26 @@
 			{
 				this.dummy = jQuery('<div></div>');
 				this.dummy.css({
-												'font-size'  : this.textarea.css('font-size'),
-												'font-family': this.textarea.css('font-family'),
-												'width'      : this.textarea.css('width'),
-												'padding-top'   : this.textarea.css('padding-top'),
-												'padding-right' : this.textarea.css('padding-right'),
-												'padding-bottom': this.textarea.css('padding-bottom'),
-												'padding-left'  : this.textarea.css('padding-left'),
-												'line-height': this.line_height + 'px',
-												'overflow-x' : 'hidden',
-												'position'   : 'absolute',
-												'top'        : 0,
-												'left'		 : -9999
-												}).appendTo('body');
+					'font-size'  : this.textarea.css('font-size'),
+					'font-family': this.textarea.css('font-family'),
+					'width'      : this.textarea.css('width'),
+					'padding-top'   : this.textarea.css('padding-top'),
+					'padding-right' : this.textarea.css('padding-right'),
+					'padding-bottom': this.textarea.css('padding-bottom'),
+					'padding-left'  : this.textarea.css('padding-left'),
+					'line-height': this.line_height + 'px',
+					'overflow-x' : 'hidden',
+					'position'   : 'absolute',
+					'top'        : 0,
+					'left'	 : -9999,
+					'white-space': 'pre-wrap',
+					'word-wrap': 'break-word'
+				}).appendTo('body');
 			}
+			
+			// Match dummy width (i.e. when using % width or "auto" and window has been resized)
+			var dummyWidth = this.dummy.css('width');
+			var textareaWidth = this.textarea.css('width');
 			
 			// Strip HTML tags
 			var html = this.textarea.val().replace(/(<|>)/g, '');
@@ -113,9 +119,11 @@
 				html = html.replace(/\n/g, '<br>new');
 			}
 			
-			if (this.dummy.html() != html)
+			// Grow if the text has been updated or textarea resized
+			if (this.dummy.html() != html || dummyWidth != textareaWidth)
 			{
-				this.dummy.html(html);	
+				this.dummy.html(html);		 // update dummy content
+				this.dummy.width(textareaWidth); // update dummy width to match
 				
 				if (this.max_height > 0 && (this.dummy.height() + this.line_height > this.max_height))
 				{
