@@ -48,8 +48,13 @@
 		this.expand_callback		= this.options.expandCallback;
 		this.textarea		  	= jQuery(e);
 		
-		if(this.line_height == NaN)
-		  this.line_height = 0;
+		// In IE if line-height is not specified in css, it will always return NaN
+		if (jQuery.browser.msie && (isNaN(this.line_height))) {
+			// set the line height for IE
+			jQuery(e).css('line-height','100%');
+			this.line_height=parseInt(jQuery(e).css('line-height'));
+		}
+		this.line_height = isNaN(this.line_height)? 0 : this.line_height;
 		
 		// Only one textarea activated at a time, the one being used
 		this.init();
