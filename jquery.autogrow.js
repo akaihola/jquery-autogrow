@@ -1,4 +1,4 @@
-/* 
+/*
  * Auto Expanding Text Area (1.2.2)
  * by Chrys Bader (www.chrysbader.com)
  * chrysb@gmail.com
@@ -8,24 +8,24 @@
  * John Resig - jeresig@gmail.com
  *
  * Copyright (c) 2008 Chrys Bader (www.chrysbader.com)
- * Licensed under the GPL (GPL-LICENSE.txt) license. 
+ * Licensed under the GPL (GPL-LICENSE.txt) license.
  *
  *
  * NOTE: This script requires jQuery to work.  Download jQuery at www.jquery.com
  *
  */
- 
+
 (function(jQuery) {
-		  
+
 	var self = null;
- 
+
 	jQuery.fn.autogrow = function(o)
-	{	
+	{
 		return this.each(function() {
 			new jQuery.autogrow(this, o);
 		});
 	};
-	
+
 
     /**
      * The autogrow object.
@@ -36,7 +36,7 @@
      * @param Hash o A set of key/value pairs to set as configuration properties.
      * @cat Plugins/autogrow
      */
-	
+
 	jQuery.autogrow = function (e, o)
 	{
 		this.options		  	= o || {};
@@ -47,40 +47,40 @@
 		this.max_height		  	= this.options.maxHeight || parseInt(jQuery(e).css('max-height'));;
 		this.expand_callback		= this.options.expandCallback;
 		this.textarea		  	= jQuery(e);
-		
+
 		if(this.line_height == NaN)
 		  this.line_height = 0;
-		
+
 		// Only one textarea activated at a time, the one being used
 		this.init();
 	};
-	
+
 	jQuery.autogrow.fn = jQuery.autogrow.prototype = {
     autogrow: '1.2.2'
   };
-	
+
  	jQuery.autogrow.fn.extend = jQuery.autogrow.extend = jQuery.extend;
-	
+
 	jQuery.autogrow.fn.extend({
-						 
-		init: function() {			
-			var self = this;			
+
+		init: function() {
+			var self = this;
 			this.textarea.css({overflow: 'hidden', display: 'block'});
 			this.textarea.bind('focus', function() { self.startExpand() } ).bind('blur', function() { self.stopExpand() });
-			this.checkExpand();	
+			this.checkExpand();
 		},
-						 
-		startExpand: function() {				
+
+		startExpand: function() {
 		  var self = this;
 			this.interval = window.setInterval(function() {self.checkExpand()}, 400);
 		},
-		
+
 		stopExpand: function() {
-			clearInterval(this.interval);	
+			clearInterval(this.interval);
 		},
-		
+
 		checkExpand: function() {
-			
+
 			if (this.dummy == null)
 			{
 				this.dummy = jQuery('<div></div>');
@@ -101,16 +101,16 @@
 					'word-wrap': 'break-word'
 				}).appendTo('body');
 			}
-			
+
 			// Match dummy width (i.e. when using % width or "auto" and window has been resized)
 			var dummyWidth = this.dummy.css('width');
 			var textareaWidth = this.textarea.css('width');
-			
+
 			// Strip HTML tags
 			var html = this.textarea.val().replace(/(<|>)/g, '');
-			
+
 			// IE is different, as per usual
-			if (jQuery.browser.msie)
+			if (jQuery.browser && jQuery.browser.msie)
 			{
 				html = html.replace(/\n/g, '<BR>new');
 			}
@@ -118,32 +118,32 @@
 			{
 				html = html.replace(/\n/g, '<br>new');
 			}
-			
+
 			// Grow if the text has been updated or textarea resized
 			if (this.dummy.html() != html || dummyWidth != textareaWidth)
 			{
 				this.dummy.html(html);		 // update dummy content
 				this.dummy.width(textareaWidth); // update dummy width to match
-				
+
 				if (this.max_height > 0 && (this.dummy.height() + this.line_height > this.max_height))
 				{
-					this.textarea.css('overflow-y', 'auto');	
+					this.textarea.css('overflow-y', 'auto');
 				}
 				else
 				{
 					this.textarea.css('overflow-y', 'hidden');
 					if (this.textarea.height() < this.dummy.height() + this.line_height || (this.dummy.height() < this.textarea.height()))
-					{	
-						this.textarea.animate({height: (this.dummy.height() + this.line_height) + 'px'}, 100);	
+					{
+						this.textarea.animate({height: (this.dummy.height() + this.line_height) + 'px'}, 100);
 					}
 				}
 			}
-			
+
 			if (this.expand_callback) {
 				var self = this;
 				window.setTimeout(function(){self.expand_callback()},500);
 			}
 		}
-						 
+
 	 });
 })(jQuery);
